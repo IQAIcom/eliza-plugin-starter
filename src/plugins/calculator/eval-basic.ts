@@ -1,85 +1,85 @@
-import { Evaluator, ActionExample } from "@ai16z/eliza";
+import { ActionExample, type Evaluator } from "@ai16z/eliza";
 
 export const calculationEvaluator: Evaluator = {
-  // Unique identifier for this evaluator
-  name: "VALIDATE_CALCULATION",
+	// Unique identifier for this evaluator
+	name: "VALIDATE_CALCULATION",
 
-  // Alternative names that could trigger this evaluator
-  similes: ["CHECK_MATH", "VERIFY_CALCULATION", "MATH_CHECK"],
+	// Alternative names that could trigger this evaluator
+	similes: ["CHECK_MATH", "VERIFY_CALCULATION", "MATH_CHECK"],
 
-  // Set to true if this evaluator should run on every message
-  alwaysRun: false,
+	// Set to true if this evaluator should run on every message
+	alwaysRun: false,
 
-  // Clear description of what this evaluator does
-  description:
-    "Validates mathematical calculations and checks for computational accuracy",
+	// Clear description of what this evaluator does
+	description:
+		"Validates mathematical calculations and checks for computational accuracy",
 
-  // Validation function to determine if this evaluator should run
-  validate: async (runtime, message) => {
-    // Only evaluate messages that contain numbers and math operators
-    const mathPattern = /[\d+\-*/()]/;
-    return mathPattern.test(message.content.text);
-  },
+	// Validation function to determine if this evaluator should run
+	validate: async (_runtime, message) => {
+		// Only evaluate messages that contain numbers and math operators
+		const mathPattern = /[\d+\-*/()]/;
+		return mathPattern.test(message.content.text);
+	},
 
-  // Main evaluation logic
-  handler: async (runtime, message) => {
-    // Extract calculation result from message
-    const result = parseFloat(message.content.text);
+	// Main evaluation logic
+	handler: async (_runtime, message) => {
+		// Extract calculation result from message
+		const result = Number.parseFloat(message.content.text);
 
-    // Return validation results
-    return {
-      isValid: !isNaN(result),
-      calculatedValue: result,
-    };
-  },
+		// Return validation results
+		return {
+			isValid: !Number.isNaN(result),
+			calculatedValue: result,
+		};
+	},
 
-  // Example scenarios showing how the evaluator works
-  examples: [
-    {
-      context: "{{user1}} is using a calculator function",
-      messages: [
-        {
-          user: "{{user1}}",
-          content: {
-            text: "What is 25 * 4?",
-            action: "CALCULATE",
-          },
-        },
-        {
-          user: "Calculator",
-          content: {
-            text: "The result is 100",
-            action: "RESPOND",
-          },
-        },
-      ],
-      outcome: `{
+	// Example scenarios showing how the evaluator works
+	examples: [
+		{
+			context: "{{user1}} is using a calculator function",
+			messages: [
+				{
+					user: "{{user1}}",
+					content: {
+						text: "What is 25 * 4?",
+						action: "CALCULATE",
+					},
+				},
+				{
+					user: "Calculator",
+					content: {
+						text: "The result is 100",
+						action: "RESPOND",
+					},
+				},
+			],
+			outcome: `{
                 "isValid": true,
                 "calculatedValue": 100
             }`,
-    },
-    {
-      context: "{{user1}} receives an invalid calculation",
-      messages: [
-        {
-          user: "{{user1}}",
-          content: {
-            text: "What is 10 / 0?",
-            action: "CALCULATE",
-          },
-        },
-        {
-          user: "Calculator",
-          content: {
-            text: "Cannot divide by zero",
-            action: "RESPOND",
-          },
-        },
-      ],
-      outcome: `{
+		},
+		{
+			context: "{{user1}} receives an invalid calculation",
+			messages: [
+				{
+					user: "{{user1}}",
+					content: {
+						text: "What is 10 / 0?",
+						action: "CALCULATE",
+					},
+				},
+				{
+					user: "Calculator",
+					content: {
+						text: "Cannot divide by zero",
+						action: "RESPOND",
+					},
+				},
+			],
+			outcome: `{
                 "isValid": false,
                 "calculatedValue": null
             }`,
-    },
-  ],
+		},
+	],
 };
