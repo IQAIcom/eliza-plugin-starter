@@ -3,12 +3,15 @@ import { defineConfig } from "tsup";
 export default defineConfig({
 	entry: {
 		index: "src/index.ts",
-		client: "src/client.ts",
+		plugins: "src/plugins/*/index.ts",
+		scripts: "src/scripts/*.ts",
 	},
-	format: ["cjs", "esm"],
+	format: ["esm", "cjs"],
 	dts: true,
 	splitting: true,
 	sourcemap: true,
 	clean: true,
-	external: ["react"],
+	outDir: "dist",
+	target: "node18",
+	treeshake: true,
 });
