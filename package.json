@@ -15,14 +15,7 @@
 		"lint:fix": "biome check . --apply",
 		"mock-eliza": "node --loader ts-node/esm ./src/scripts/load-with-plugin.ts"
 	},
-	"keywords": [
-		"eliza",
-		"ai",
-		"plugin",
-		"tavily",
-		"exa",
-		"search"
-	],
+	"keywords": ["eliza", "ai", "plugin", "tavily", "exa", "search"],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
